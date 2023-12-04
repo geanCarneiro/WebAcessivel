@@ -1,17 +1,14 @@
 
-setTimeout(() => {
-    document.addEventListener(
-        'keydown',
-        (evt) => {
-            let keyCode = evt.code;
-    
-            updatePostTitle()
-    
-        }, false
-    )
 
-    notifyScreenReader('script web acessivel carregado')
-}, 1000)
+document.addEventListener(
+    'keydown',
+    (evt) => {
+        let keyCode = evt.code;
+
+        updatePostTitle()
+
+    }, false
+)
 
 function notifyScreenReader(msg){
     let ariaLive = getAriaLiveElement();
