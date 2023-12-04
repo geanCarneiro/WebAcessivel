@@ -9,6 +9,8 @@ setTimeout(() => {
     
         }, false
     )
+
+    notifyScreenReader('script web acessivel carregado')
 }, 1000)
 
 function notifyScreenReader(msg){
