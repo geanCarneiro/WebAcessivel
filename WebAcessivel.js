@@ -1,13 +1,15 @@
 
-document.addEventListener(
-    'keydown',
-    (evt) => {
-        let keyCode = evt.code;
-
-        updatePostTitle()
-
-    }, false
-)
+setTimeout(() => {
+    document.addEventListener(
+        'keydown',
+        (evt) => {
+            let keyCode = evt.code;
+    
+            updatePostTitle()
+    
+        }, false
+    )
+}, 1000)
 
 function notifyScreenReader(msg){
     let ariaLive = getAriaLiveElement();
