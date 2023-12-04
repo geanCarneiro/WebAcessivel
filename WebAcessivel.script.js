@@ -17,7 +17,7 @@
     includeBaseScript();
 
     function includeBaseScript() {
-        const baseScript = "https://raw.githubusercontent.com/geanCarneiro/Aleatorio/main/WhatsappWebWithMoreAccessibility.js";
+        const baseScript = "https://raw.githubusercontent.com/geanCarneiro/WebAcessivel/main/WebAcessivel.js";
 
         GM_xmlhttpRequest({
             method: "GET",
