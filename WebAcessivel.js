@@ -9,9 +9,6 @@ document.addEventListener(
     }, false
 )
 
-notifyScreenReader('script web acessivel carregado');
-
-
 function notifyScreenReader(msg){
     let ariaLive = getAriaLiveElement();
     ariaLive.textContent = msg;
