@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WebAcessivel
 // @namespace    https://github.com/geanCarneiro/WebAcessivel
-// @version      0.2
+// @version      0.3
 // @description  Script criando pra tornar a internet mais acessivel
 // @author       Gean G. Carneiro
 // @match        https://www.instagram.com/
