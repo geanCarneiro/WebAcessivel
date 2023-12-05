@@ -14,17 +14,31 @@
 (function() {
     'use strict';
 
-    document.addEventListener(
-        'keydown',
-        (evt) => {
-            let keyCode = evt.code;
+    window.onload = function () {
+        document.addEventListener(
+            'keydown',
+            (evt) => {
+                let keyCode = evt.code;
+    
+                insertTitles()
+                updatePostTitle()
+                fixDoubleSemantic()
+    
+            }, false
+        )
+        insertTitles()
+        updatePostTitle()
+        fixDoubleSemantic()
+    }
 
-            insertTitles()
-            updatePostTitle()
-
-        }, false
-    )
-
+    
+    function fixDoubleSemantic(){
+        let instagramLink = document.querySelector('a[class][href="/"]');
+        instagramLink.ariaLabel = 'Instagram'
+        
+        let instagramImg = instagramLink.querySelector('[role="img"]')
+        instagramImg.ariaHidden = 'true'
+    }
     
 
     function insertTitles(){
@@ -32,34 +46,16 @@
         let postsArea = document.querySelector('main div[style] > div > div:nth-of-type(2) > div').querySelector('article[class]')
         postsArea = postsArea.parentNode.parentNode;
 
-        if(!postsArea.querySelector('h2')){
-            let titlePosts = document.createElement('h2')
-            titlePosts.style.width = '0'
-            titlePosts.style.height = '0'
-            titlePosts.style.overflow = 'hidden'
-            titlePosts.textContent = 'Feed'
-            postsArea.prepend(titlePosts)
-        }
+        createTitleIn(2, 'Feed', postsArea)
 
         // insert Stories Title
         let storiesArea = document.querySelector('main [role="menu"] [role="presentation"]')
         storiesArea = storiesArea.parentNode;
 
-        if(!storiesArea.querySelector('h2')){
-            let titleStories = document.createElement('h2')
-            titleStories.style.width = '0'
-            titleStories.style.height = '0'
-            titleStories.style.overflow = 'hidden'
-            titleStories.textContent = 'Stories'
-            storiesArea.prepend(titleStories)
-        }
+        createTitleIn(2, 'Stories', storiesArea)
 
         // set Instagram as tittle
-        let instagramImg = document.querySelector('svg[aria-label="Instagram"]');
-        instagramImg = instagramImg.parentNode
-
-        instagramImg.setAttribute('role', 'heading')
-        instagramImg.setAttribute('aria-level', '1')
+        createTitleIn(1, 'Instagram', document.body)
     }
 
     function notifyScreenReader(msg){
@@ -86,8 +82,20 @@
 
         posts.forEach(post => {
             let postOwner = post.querySelector('div > div:nth-of-type(1) span[dir] a span[dir]');
-            postOwner.setAttribute('role', 'heading')
-            postOwner.setAttribute('aria-level', '3')
+            postOwner = postOwner.textContent;
+
+            createTitleIn(3, 'publicação de ' + postOwner, post)
         });
+    }
+
+    function createTitleIn(titleLevel, text, elemParent){
+        if(!elemParent.querySelector('h' + titleLevel)){
+            let tittle = document.createElement('h' + titleLevel)
+            tittle.style.width = '0'
+            tittle.style.height = '0'
+            tittle.style.overflow = 'hidden'
+            tittle.textContent = text
+            elemParent.prepend(tittle)
+        }
     }
 })();
