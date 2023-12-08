@@ -17,26 +17,7 @@
     window.onload = function () {
              
         
-        let posts = document.querySelector('main div[style] > div > div:nth-of-type(2) > div').querySelectorAll('article[class]')
-        posts.forEach(post =>{
-            post.addEventListener(
-                'keydown',
-                (evt) => {
-
-                    let focusTarget;
-    
-                    if(evt.altKey && evt.key == 't'){
-                        focusTarget = post.querySelector('section');
-                    }
-
-                    focusTarget.focus()
-            
-                }, false
-            )
-        })
-
-        let postsArea = posts[0]
-        postsArea = postsArea.parentNode;
+        
 
         let observer = new MutationObserver(function(mutations) {
             mutations.forEach(mutation => {
@@ -47,9 +28,57 @@
                 }
             })
         })
+        
 
-        observer.observe(postsArea, {childList: true})
+        waitForElm('main div[style] > div > div:nth-of-type(2) > div').then(elem => {
+            let postsArea = elem.querySelector('article[class]')
+            postsArea = postsArea.parentNode;
+
+            observer.observe(postsArea, {childList: true})
+        })
+
+        
   
+        window.addEventListener(
+            "keydown",
+            (/** @type {KeyboardEvent} */   evt) => {
+                /** @type {Node} */
+                let post = evt.target
+
+                let focusTarget;
+
+                // controles das publicações
+                if(post.tagName == 'ARTICLE'){
+                    if(evt.altKey && evt.key.toLowerCase() == "l"){
+                        evt.preventDefault()
+                        evt.stopPropagation()
+                        
+                        let botaoCurtir = post.querySelector('svg[aria-label="Curtir"]');
+                        let curtir = botaoCurtir != null
+                        if(!curtir) 
+                            botaoCurtir = post.querySelector('svg[aria-label="Descurtir"]')
+
+                        botaoCurtir = botaoCurtir != null ? botaoCurtir.parentNode : null
+                        botaoCurtir = botaoCurtir != null ? botaoCurtir.parentNode : null
+                        botaoCurtir = botaoCurtir != null ? botaoCurtir.parentNode : null
+                        botaoCurtir != null ? botaoCurtir.click() : null
+                        if(botaoCurtir != null)
+                            curtir ? notifyScreenReader('curtiu') : notifyScreenReader('descurtiu')
+
+                    }
+                }
+                // controle gerais
+                if(evt.altKey && evt.key.toLowerCase() == "f"){
+                    evt.preventDefault()
+                    evt.stopPropagation()
+                    
+                    let feedTitle = document.querySelector('#feedTitle');
+                    feedTitle != null ? feedTitle.focus() : null
+                }
+                
+        
+            }, false
+        )
 
         // garantir a primeira execução dos metodos
         insertTitles()
@@ -76,7 +105,7 @@
         let postsArea = document.querySelector('main div[style] > div > div:nth-of-type(2) > div').querySelector('article[class]')
         postsArea = postsArea.parentNode.parentNode;
 
-        createTitleIn(2, 'Feed', postsArea)
+        createTitleIn(2, 'Feed', postsArea, 'feedTitle')
 
         // insert Stories Title
         let storiesArea = document.querySelector('main [role="menu"] [role="presentation"]')
@@ -121,6 +150,7 @@
         postOwner = postOwner.textContent;
 
         createTitleIn(3, 'publicação de ' + postOwner, post)
+        post.tabIndex = "0"
 
 
         if(!post.querySelector('section').parentNode.querySelector('article')){
@@ -128,21 +158,45 @@
             let textElem = pivot.nextSibling;
 
             let sectionElem = document.createElement('section');
-            //articleElem.tabIndex = '-1'
+            sectionElem.tabIndex = '-1'
 
             pivot.after(sectionElem)
             sectionElem.appendChild(textElem)
         }
     }
 
-    function createTitleIn(titleLevel, text, elemParent){
+    function createTitleIn(titleLevel, text, elemParent, id = null){
         if(!elemParent.querySelector('h' + titleLevel)){
-            let tittle = document.createElement('h' + titleLevel)
-            tittle.style.width = '0'
-            tittle.style.height = '0'
-            tittle.style.overflow = 'hidden'
-            tittle.textContent = text
-            elemParent.prepend(tittle)
+            let title = document.createElement('h' + titleLevel)
+            title.style.width = '0'
+            title.style.height = '0'
+            title.style.overflow = 'hidden'
+            if (id != null) {
+                title.id = id
+                title.tabIndex = '0'
+            }
+            title.textContent = text
+            elemParent.prepend(title)
         }
+    }
+
+    function waitForElm(selector) {
+        return new Promise(resolve => {
+            if (document.querySelector(selector)) {
+                return resolve(document.querySelector(selector));
+            }
+    
+            const observer = new MutationObserver(mutations => {
+                if (document.querySelector(selector)) {
+                    observer.disconnect();
+                    resolve(document.querySelector(selector));
+                }
+            });
+    
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        });
     }
 })();
