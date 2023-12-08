@@ -26,7 +26,7 @@
                     let focusTarget;
     
                     if(evt.altKey && evt.key == 't'){
-                        focusTarget = post.querySelector('article');
+                        focusTarget = post.querySelector('section');
                     }
 
                     focusTarget.focus()
@@ -122,15 +122,15 @@
 
         createTitleIn(3, 'publicação de ' + postOwner, post)
 
-        post.tabIndex = '-1'
 
         if(!post.querySelector('section').parentNode.querySelector('article')){
-            let textElem = post.querySelector('section').nextSibling;
+            let pivot = post.querySelector('section');
+            let textElem = pivot.nextSibling;
 
-            let articleElem = document.createElement('article');
-            articleElem.tabIndex = '-1'
+            let sectionElem = document.createElement('section');
+            //articleElem.tabIndex = '-1'
 
-            post.querySelector('section').after(articleElem)
+            pivot.after(sectionElem)
             articleElem.appendChild(textElem)
         }
     }
