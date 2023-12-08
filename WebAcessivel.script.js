@@ -131,7 +131,7 @@
             //articleElem.tabIndex = '-1'
 
             pivot.after(sectionElem)
-            articleElem.appendChild(textElem)
+            sectionElem.appendChild(textElem)
         }
     }
 
