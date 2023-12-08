@@ -48,7 +48,7 @@
             })
         })
 
-        observer.observe(postsArea, {childList: true, subtree: true})
+        observer.observe(postsArea, {childList: true})
   
 
         // garantir a primeira execução dos metodos
