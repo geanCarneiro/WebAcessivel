@@ -38,11 +38,11 @@
         })
 
         
-  
-        window.addEventListener(
+  /*
+        window .addEventListener(
             "keydown",
-            (/** @type {KeyboardEvent} */   evt) => {
-                /** @type {Node} */
+            ( @type {KeyboardEvent}    evt) => {
+                 @type {Node} 
                 let post = evt.target
 
                 let focusTarget;
@@ -78,7 +78,7 @@
                 
         
             }, false
-        )
+        ) */
 
         // garantir a primeira execução dos metodos
         insertTitles()
@@ -97,21 +97,27 @@
         menu.querySelectorAll('svg').forEach(graph => {
             graph.ariaHidden = 'true'
         })
+
     }
     
 
     function insertTitles(){
         // insert Post Title
-        let postsArea = document.querySelector('main div[style] > div > div:nth-of-type(2) > div').querySelector('article[class]')
-        postsArea = postsArea.parentNode.parentNode;
+        waitForElm('main div[style] > div > div:nth-of-type(2) > div').then(elem => {
+            let postsArea = elem.querySelector('article[class]')
+            postsArea = postsArea.parentNode.parentNode;
 
-        createTitleIn(2, 'Feed', postsArea, 'feedTitle')
+            createTitleIn(2, 'Feed', postsArea, 'feedTitle')
+        })
+      
 
         // insert Stories Title
-        let storiesArea = document.querySelector('main [role="menu"] [role="presentation"]')
-        storiesArea = storiesArea.parentNode;
+        waitForElm('main [role="menu"] [role="presentation"]').then(storiesArea => {
+            storiesArea = storiesArea.parentNode;
 
-        createTitleIn(2, 'Stories', storiesArea)
+            createTitleIn(2, 'Stories', storiesArea)
+        })
+
 
         // set Instagram as tittle
         createTitleIn(1, 'Instagram', document.body)
@@ -157,11 +163,31 @@
             let pivot = post.querySelector('section');
             let textElem = pivot.nextSibling;
 
-            let sectionElem = document.createElement('section');
+            let sectionElem = document.createElement('article');
             sectionElem.tabIndex = '-1'
 
             pivot.after(sectionElem)
             sectionElem.appendChild(textElem)
+        }
+
+        let botoesLink = post.querySelectorAll('[role="button"]');
+            botoesLink.forEach(botaoLink => {
+                let img = botaoLink.querySelector('[role="img"]');
+                if(img) {
+                    img.ariaHidden = 'true'
+                    botaoLink.ariaLabel = img.ariaLabel
+                }
+            })
+
+        
+
+        let botaoCompartilhar = post.querySelector('button');
+        if(botaoCompartilhar){
+        let img = botaoCompartilhar.querySelector('[role="img"]');
+            if(img) {
+                img.ariaHidden = 'true'
+                botaoCompartilhar.ariaLabel = img.ariaLabel
+            }
         }
     }
 
